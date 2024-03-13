@@ -23,8 +23,8 @@ public class Customer {
     @Column(name = "create_date")
     private Date createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "addr_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @Column(name = "active")

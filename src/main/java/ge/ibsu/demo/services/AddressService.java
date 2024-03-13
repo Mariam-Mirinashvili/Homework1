@@ -1,9 +1,11 @@
 package ge.ibsu.demo.services;
 
 import ge.ibsu.demo.dto.AddAddress;
+import ge.ibsu.demo.dto.projections.AddressPostalCodeView;
 import ge.ibsu.demo.entities.Address;
 import ge.ibsu.demo.repositories.AddressRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +36,9 @@ public class AddressService {
         address.setPostalCode(addAddress.getPostalCode());
 
         return addressRepository.save(address);
+    }
+
+    public List<AddressPostalCodeView> getAllPostalCode() {
+        return addressRepository.findAllAddressPostalCode();
     }
 }

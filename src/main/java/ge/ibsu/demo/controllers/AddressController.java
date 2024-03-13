@@ -1,5 +1,6 @@
 package ge.ibsu.demo.controllers;
 
+import ge.ibsu.demo.dto.projections.AddressPostalCodeView;
 import ge.ibsu.demo.entities.Address;
 import ge.ibsu.demo.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class AddressController {
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = {"application/json"})
     public List<Address> getAll() {
         return addressService.getAll();
+    }
+
+    @RequestMapping(value = "/allPostalCodes", method = RequestMethod.GET, produces = {"application/json"})
+    public List<AddressPostalCodeView> getAllPostalCodes() {
+        return addressService.getAllPostalCode();
     }
 }

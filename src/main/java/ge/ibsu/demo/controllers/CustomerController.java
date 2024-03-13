@@ -1,8 +1,6 @@
 package ge.ibsu.demo.controllers;
 
-import ge.ibsu.demo.dto.AddCustomer;
-import ge.ibsu.demo.dto.RequestData;
-import ge.ibsu.demo.dto.SearchCustomer;
+import ge.ibsu.demo.dto.*;
 import ge.ibsu.demo.entities.Customer;
 import ge.ibsu.demo.services.CustomerService;
 import ge.ibsu.demo.util.GeneralUtil;
@@ -53,8 +51,19 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST, produces = {"application/json"})
-    public Page<Customer> search(@RequestBody RequestData<SearchCustomer> rd) throws Exception {
+    public Page<CustomerInfo> search(@RequestBody RequestData<SearchCustomer> rd) throws Exception {
         GeneralUtil.checkRequiredProperties(rd.getData(), Arrays.asList("active", "searchText"));
         return customerService.search(rd.getData(), rd.getPaging());
+    }
+
+    @RequestMapping(value = "/{id}/status", method = RequestMethod.PUT, produces = {"application/json"})
+    public Boolean editActiveStatus(@RequestBody CustomerStatus customerStatus, @PathVariable Long id) throws Exception {
+        customerService.setActiveStatusToCustomer(id, customerStatus.getActive());
+        return true;
+    }
+
+    @RequestMapping(value = "/active", method = RequestMethod.GET,produces = {"application/json"})
+    public List<CustomerFullName> getAllActive() {
+        return customerService.getActiveCustomers();
     }
 }

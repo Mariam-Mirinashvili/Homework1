@@ -1,8 +1,6 @@
 package ge.ibsu.demo.services;
 
-import ge.ibsu.demo.dto.AddCustomer;
-import ge.ibsu.demo.dto.Paging;
-import ge.ibsu.demo.dto.SearchCustomer;
+import ge.ibsu.demo.dto.*;
 import ge.ibsu.demo.entities.Address;
 import ge.ibsu.demo.entities.Customer;
 import ge.ibsu.demo.repositories.CustomerRepository;
@@ -64,12 +62,21 @@ public class CustomerService {
         return true;
     }
 
-    public Page<Customer> search(SearchCustomer searchCustomer, Paging paging) {
+    public Page<CustomerInfo> search(SearchCustomer searchCustomer, Paging paging) {
         String searchText = searchCustomer.getSearchText() != null ? "%" + searchCustomer.getSearchText() + "%" : "";
         //for native query sort field should be the database column
         //Pageable pageable = PageRequest.of(paging.getPage() - 1, paging.getSize(), Sort.by("customer_id").descending());
         //return customerRepository.searchWithNative(searchCustomer.getActive(), searchText, pageable);
         Pageable pageable = PageRequest.of(paging.getPage() - 1, paging.getSize(), Sort.by("id").descending());
-        return customerRepository.search(searchCustomer.getActive(), searchText, pageable);
+        return customerRepository.searchInfo(searchCustomer.getActive(), searchText, pageable);
+    }
+
+    @Transactional
+    public void setActiveStatusToCustomer(Long id, Integer status) {
+        customerRepository.setActiveStatusForCustomer(id, status);
+    }
+
+    public List<CustomerFullName> getActiveCustomers() {
+        return customerRepository.findAllByActive(1, CustomerFullName.class);
     }
 }
